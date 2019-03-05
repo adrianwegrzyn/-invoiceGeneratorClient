@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="commons-codec-1.9">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/Downloads/przyklady/ExampleClient/lib/commons-codec-1.9.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/przyklady/ExampleClient/lib/commons-logging-1.2.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/przyklady/ExampleClient/lib/gson-2.3.1.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/przyklady/ExampleClient/lib/httpclient-4.5.2.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/przyklady/ExampleClient/lib/httpcore-4.4.4.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

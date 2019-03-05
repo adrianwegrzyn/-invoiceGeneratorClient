@@ -1,0 +1,156 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[polish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage{geometry}
+\newgeometry{tmargin=3cm, bmargin=3cm, lmargin=3cm, rmargin=3cm}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=blue,
+    filecolor=blue,
+    linkcolor=blue,
+    urlcolor=blue
+}
+\selectlanguage{polish}
+\author{Autorzy: Krzysztof Wowczuk, Adrian Węgrzyn, Krzysztof Kozioł}
+\title{\large{ \textbf{Dokumentacja techniczna projektu nr 24 - Generator Faktur (wersja zaawansowana)}}}
+\frenchspacing
+\begin{document}
+\maketitle
+\tableofcontents
+
+\begin{figure}[!h]
+\includegraphics{idea.png}
+\includegraphics{bitbucket.png}
+\includegraphics{latex.png}
+\includegraphics{pdf.png}
+\end{figure}
+
+\newpage
+\section{Informacje ogólne}
+\textsf{\hspace{8mm}Jest to generator faktur, oparty o architekturę klient - serwer. Faktury generują się do formatu PDF. Dokumentacja techniczna przedstawia opis funkcjonalny klienta, opis usług serwera, podział prac w zespole oraz wykorzystane oprogramowanie w tworzeniu projektu. Projekt powstał na potrzeby zaliczenia przedmiotu Narzędzia i środowiska programistyczne.} 
+
+
+\section{Interfejs użytkownika}
+
+
+\textsf{\hspace{8mm}Rysunek 1 prezentuje interfejs użytkownika wraz z przykładowymi danymi, jest on bardzo intuicyjny. W sekcji Dane Klienta należy podać nazwę klienta, adres, kod pocztowy, oraz miasto. W sekcji Zamówienie dostępne pola to: opis, ilość, cena netto, VAT. W sekcji Dane Sprzedawcy podajemy: nazwę firmy, imię i nazwisko, adres, kod pocztowy oraz miasto. Znajduje się tutaj również okienko z wygenerowaną aktualną listą faktur PDF.}
+
+\begin{figure}[!h]
+\includegraphics{screen1.png}
+\caption{interfejs użytkownika}
+\end{figure}
+
+\textsf{\hspace{8mm}Rysunek 2 przedstawia wygenerowaną fakturę. Na fakturze znajdziemy dane sprzedawcy oraz nabywcy. Ponadto znajduje się tutaj opis, liczba, cena jednostkowa, cenna netto oraz całkowity koszt zakupu. Cena końcowa wygenerowana jest liczbowo oraz słownie. Plik PDF znajduje się na dysku D: w folderze PDF. Jego nazwa to: invoice\_ [data w milisekundach].pdf}  
+
+\newpage
+\begin{figure}[!h]
+\includegraphics{screen2.png}
+\caption{wygenerowana faktura}
+\end{figure}
+
+\begin{center}
+\large{\textbf{KOMUNIKATY:}}
+\end{center}
+\begin{figure}[!h]
+\includegraphics{kom1.png}
+\includegraphics{kom2.png}
+\includegraphics{kom3.png}
+\includegraphics{kom4.png}
+\includegraphics{kom5.png}
+\end{figure}
+
+
+
+\newpage
+\section{Usługi serwera}
+
+\begin{table}[!h]
+    \begin{tabular}{|l|l|}
+    \hline
+   \textbf{URL USŁUGI 1}               & 127.0.0.1:8080/api/invoice       \\ \hline
+    \textbf{TYP ŻĄDANIA}                & POST                                                                                                                                                                                                                                                                                                                                                                                        \\ \hline
+   \textbf{PARAMETRY WEJŚCIOWE } & \{ \\ \textbf{[JSON]} & \\ & ”sellerCompany”: ”Apollo”, \\ & ”sellerName”: ”Jan Kowalski”,\\ & ”sellerAddress”: ”Krakowska 5”,\\ & ”sellerPostcode”: ”33-100”, \\ & ”sellerCity”: ”Tarnów”, \\ & ”buyerName”: ”Jan Nowak”, \\ & ”buyerAddress”: ”Mickiewicza 10”,\\ & ”buyerPostcode”: ”33-100”, \\ & ”buyerCity”: ”Tarnów”,\\ & ”description”: ”Procesor Intel Core i5-7400”, \\ & ”quantity”: ”6”,\\ & ”netPrice”: ”800”, \\ & ”taxRate”: ”23” \\ & \\ & \} \\ \hline
+    \textbf{PARAMETRY WYJŚCIOWE} & BRAK \\ \textbf{[JSON]} &                                                                                                                                                                                                                                                                                                                                                                                         \\ \hline
+    \textbf{KOD ODPOWIEDZI SERWERA}     & 201                                                                                                                                                                                                                                                                                                                                                                                         \\ \hline
+\textbf{KOMENTARZ}                  & Klient wywołuje usługę. Przesyła JSON’a \\ & do serwera. Serwer odczytuje dane oraz \\ & zapisuje je na dysku w wygenerowanym \\ & pliku PDF. Po wykonaniu operacji usługa \\ & zwraca kod 201 (wygenerowany PDF został \\ & zapisany na dysku). Po każdym wywołaniu\\ & usługi tworzy się unikatowa nazwa \\ & wygenerowanego pliku PDF. Całkowita \\ & cena netto, podatek oraz cena brutto \\ & wyliczane są dynamicznie i dołączone \\ & są do faktury. Numer faktury wyliczany \\ & jest dynamicznie. Numerem faktury jest \\ & aktualna data wykonania usługi. Kwota \\ & słownie generuje się dynamicznie \\ & podczas tworzenia dokumentu na \\ & podstawie całkowitej kwoty brutto  \\ \hline
+    \end{tabular}
+\end{table}
+
+\newpage
+\begin{table}
+    \begin{tabular}{|l|l|}
+    \hline
+   \textbf{URL USŁUGI 2}               & 127.0.0.1:8080/api/invoice       \\ \hline
+    \textbf{TYP ŻĄDANIA}                & GET                                                                                                                                                                                                                                                                                                                                                                                        \\ \hline
+   \textbf{PARAMETRY WEJŚCIOWE [JSON]} & BRAK \\ \hline
+   
+    \textbf{PARAMETRY WYJŚCIOWE [JSON]} & [ \\  &  \{  \\  & ”file”: ”D:\textbackslash PDF\textbackslash invoice\textunderscore 345679.pdf” \\  &  \} , \\  &  \{  \\  & ”file”: ”D:\textbackslash PDF\textbackslash invoice\textunderscore 123456.pdf” \\  &  \} \\ & ]
+    
+     \\ \hline
+    \textbf{KOD ODPOWIEDZI SERWERA}     & 200 lub 404
+ \\ \hline
+\textbf{KOMENTARZ}                   & Klient wywołuje usługę. Usługa \\ & zwraca JSON’a z listą ścieżek \\ & do plików. Lista faktur jest\\ & wyświetlana na formularzu \\ & aplikacji klienta oraz\\ & aktualizowana za każdym razem \\ & gdy generowanajest nowa faktura.                                                                                                                                                                         \\ \hline
+    \end{tabular}
+\end{table}
+
+
+
+\section{Proces debuggowania}
+\textsf{\hspace{8mm}Na tym screenie przygotowujemy się do procesu debuggowania. Zaznaczamy linie kodu checkout'ami w celu pokazania debuggerowi co chcemy przetestować}
+\begin{figure}[!h]
+\includegraphics{deb1.png}
+\end{figure}
+
+\textsf{\hspace{8mm}W kolejnym kroku uruchamiamy naszego debuggera. Jeśli serwer wystartował, przechodzimy na klienta i również go uruchamiamy. Kiedy dane z klienta zostaną przesłane, serwer zatrzyma się na pierwszym naszym checkout'cie. Od tego momentu to my sterujemy każdą iteracją pętli. Debugger pokazuje nam jakie dane zostaną przypisane do naszych zmiennych i również jak zostają one przetwarzane.}
+
+\begin{figure}[!h]
+\includegraphics{deb2.png}
+\end{figure}
+
+\section{Podział prac w zespole}
+\begin{tabular}{|l|l|l|} 
+\hline 
+\textbf{Krzysztof Wowczuk} & \textbf{Adrian Węgrzyn} & \textbf{Krzysztof Kozioł} \\ 
+\hline
+połączenie się z klientem & połączenie się z serwerem  & generowanie cyfr słownie \\
+ \hline
+ stworzenie szkieletu serwera & stworzenie szkieletu klienta  & metody obliczające koszty  \\
+\hline
+ wygenerowanie PDF i & obsługa błędów   & stworzenie dokumentacji \\
+ sformatowanie pliku &   & technicznej \\
+ \hline
+łączenie kodu z metodami & przekazanie danych z okienka  &  testowanie klient-serwer \\
+
+\hline
+tworzenie i wyświetlanie & zaprojektowanie GUI  & optymalizacja kodu \\
+listy PDF & &  \\
+\hline
+
+optymalizacja kodu& wysłanie i odbiór JSON'a  & proces debugowania \\
+
+\hline
+proces debugowania & wyświetlanie listy faktur  &  \\
+
+\hline
+\end{tabular}
+
+\section{Wykorzystywane narzędzia}
+\textsf{Narzędzia które wykorzystaliśmy do stworzenia projektu: \newline
+\begin{itemize}
+\item IntelliJ IDEA
+\item Bitbucket 
+\item MikTeX  
+\item Texmaker 
+\item Google Chrome 
+\item Adobe Acrobat Document
+\end{itemize}}
+
+\end{document}
+
+
+ 
